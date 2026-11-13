@@ -24,14 +24,15 @@ jobs:
       - uses: actions/checkout@v4
 
       # A malformed workflow file is silently *not registered* by GitHub, so
-      # the breakage is invisible until you check the Actions tab.  Lint it.
-      # The step container's default working directory is the *image's*
-      # WORKDIR (/), so point it at the checkout explicitly.
+      # the breakage is invisible until you check the Actions tab.  Lint it
+      # with the official download script (runner-native binary - the
+      # docker:// step inherits the image's own WORKDIR instead of the
+      # checkout, which made auto-detection fail).
       - name: Lint workflow files
-        uses: docker://rhysd/actionlint:latest
-        with:
-          args: -color
-          working-directory: /github/workspace
+        run: |
+          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) latest .
+          ./actionlint -color
+        shell: bash
 
       - uses: actions/setup-python@v5
         with:
