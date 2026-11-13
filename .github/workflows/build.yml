@@ -1,4 +1,4 @@
-name: build-image
+name: build
 
 # Builds the "solver" image and publishes it to GHCR.
 #   ghcr.io/<owner>/solver:latest

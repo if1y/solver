@@ -24,7 +24,7 @@ GHCR 包默认私有，部署主机拉取前需登录：
 echo "$GHCR_TOKEN" | docker login ghcr.io -u <github-user> --password-stdin
 ```
 
-`.github/workflows/build-image.yml` 在 push 到 `main`/`master`、打 `v*` tag、手动触发时
+`.github/workflows/build.yml` 在 push 到 `main`/`master`、打 `v*` tag、手动触发时
 构建并推送 `ghcr.io/<owner>/solver`，tag 包括 `latest`、分支名、`v*` 语义版本和
 `sha-xxxxx`；PR 只构建不推送。`ci.yml` 只跑单元测试（不需要 Chrome）。
 
@@ -237,7 +237,7 @@ solver/                      # 本仓库根目录
 ├── .env.example            # 配置样例
 ├── .github/workflows/
 │   ├── ci.yml              # 单元测试
-│   └── build-image.yml     # 构建并推送 ghcr.io/<owner>/solver
+│   └── build.yml            # 构建并推送 ghcr.io/<owner>/solver
 ├── examples/
 │   └── solve_once.py       # 独立客户端示例
 ├── tests/                  # 独立 pytest 配置（pythonpath=["."] testpaths=["tests"]）
