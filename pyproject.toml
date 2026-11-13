@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "solver"
+version = "1.0.0"
+description = "Standalone Cloudflare Turnstile solver exposed over HTTP"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+    "seleniumbase>=4.25",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "httpx>=0.27",
+]
+
+[project.scripts]
+solver-api = "solver.__main__:main"
+
+[tool.setuptools]
+packages = ["solver"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+markers = ["smoke: requires Chrome and network (opt-in, run with -m smoke)"]
+addopts = "-m 'not smoke'"

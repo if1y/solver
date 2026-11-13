@@ -1,0 +1,6 @@
+# Runtime set for the standalone solver.  Deliberately no ``turnstile-solver``:
+# that package pulls PyAutoGUI/opencv/numpy and its import chain calls
+# ``sys.exit()`` when tkinter is missing, which used to surface as HTTP 500s.
+fastapi>=0.110
+uvicorn[standard]>=0.29
+seleniumbase>=4.25

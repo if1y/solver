@@ -1,0 +1,30 @@
+services:
+  solver:
+    # Build locally and tag it "solver":  docker compose build
+    image: solver:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      SOLVER_HOST: 0.0.0.0
+      SOLVER_PORT: "8000"
+      HEADLESS: ${HEADLESS:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      SOLVER_API_KEY: ${SOLVER_API_KEY:-}
+      SOLVER_QUEUE_TIMEOUT: ${SOLVER_QUEUE_TIMEOUT:-120}
+    # Loopback only: the solver is never published to the outside.
+    ports:
+      - "127.0.0.1:${SOLVER_PORT:-8000}:8000"
+    restart: unless-stopped
+    init: true
+    shm_size: "1gb"
+    tmpfs:
+      - /tmp:size=512m,mode=1777
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
