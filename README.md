@@ -24,9 +24,10 @@ GHCR 包默认私有，部署主机拉取前需登录：
 echo "$GHCR_TOKEN" | docker login ghcr.io -u <github-user> --password-stdin
 ```
 
-`.github/workflows/build.yml` 在 push 到 `main`/`master`、打 `v*` tag、手动触发时
-先跑单元测试（不需要 Chrome），通过后才构建并推送 `ghcr.io/<owner>/solver`。
-tag 包括 `latest`、分支名、`v*` 语义版本和 `sha-xxxxx`；PR 只跑测试和构建、不推送。
+`.github/workflows/build.yml` **仅手动触发**：Actions → `build` → `Run workflow`。
+运行时会先跑单元测试（不需要 Chrome），通过后才构建并推送
+`ghcr.io/<owner>/solver`。tag 包括 `latest`、分支名、`v*` 语义版本和 `sha-xxxxx`
+（`v*` 需要手动打 tag 后在触发时指定，或用 `workflow_dispatch` 的默认分支）。
 
 > ⚠️ Google Chrome 的 apt 源只有 amd64，镜像因此只构建 `linux/amd64`。arm64 主机上
 > 用 `docker build --platform linux/amd64 -t solver .` 或直接拉 GHCR 的 amd64 镜像。
