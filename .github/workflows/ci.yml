@@ -1,6 +1,7 @@
 name: ci
 
-# Fast feedback on every push and pull request: unit tests only (no browser).
+# Fast feedback on every push and pull request: unit tests + workflow lint
+# (no browser needed).
 on:
   push:
     branches: [main, master]
@@ -21,6 +22,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
+      # A malformed workflow file is silently *not registered* by GitHub, so
+      # the breakage is invisible until you check the Actions tab.  Lint it.
+      - name: Lint workflow files
+        uses: docker://rhysd/actionlint:latest
 
       - uses: actions/setup-python@v5
         with:

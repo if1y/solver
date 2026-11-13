@@ -48,9 +48,11 @@ jobs:
       - uses: actions/checkout@v4
 
       # GHCR image paths must be lowercase; GitHub user names are not.
+      # The lower-casing has to happen in the shell - the `${{ }}` expression
+      # language has no string functions, so `${VAR,,}` there is a syntax error.
       - name: Lowercase owner
         id: owner
-        run: echo "name=${{ github.repository_owner,, }}" >> "$GITHUB_OUTPUT"
+        run: echo "name=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
 
       - uses: docker/setup-buildx-action@v3
 
